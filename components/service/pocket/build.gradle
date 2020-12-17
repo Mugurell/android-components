@@ -4,6 +4,7 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion config.compileSdkVersion
@@ -11,6 +12,12 @@ android {
     defaultConfig {
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
 
     buildTypes {
@@ -22,12 +29,18 @@ android {
 }
 
 dependencies {
-    implementation Dependencies.androidx_core_ktx
     implementation Dependencies.kotlin_stdlib
+    implementation Dependencies.kotlin_coroutines
+
+    implementation Dependencies.androidx_core_ktx
+    implementation Dependencies.androidx_work_runtime
+    implementation Dependencies.androidx_room_runtime
+    kapt Dependencies.androidx_room_compiler
 
     implementation project(':support-ktx')
     implementation project(':support-base')
     implementation project(':concept-fetch')
+    implementation project(':lib-fetch-httpurlconnection')
 
     testImplementation Dependencies.kotlin_reflect
 

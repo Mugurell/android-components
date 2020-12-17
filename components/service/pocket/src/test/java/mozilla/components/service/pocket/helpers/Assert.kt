@@ -8,7 +8,7 @@ import mozilla.components.concept.fetch.Client
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import mozilla.components.concept.fetch.Response
-import mozilla.components.service.pocket.net.PocketResponse
+import mozilla.components.service.pocket.api.PocketResponse
 import mozilla.components.support.test.any
 import org.junit.Assert.assertEquals
 import org.mockito.Mockito.`when`
@@ -22,6 +22,10 @@ fun <T : Any> assertConstructorsVisibility(assertedClass: KClass<T>, visibility:
     assertedClass.constructors.forEach {
         assertEquals(visibility, it.visibility)
     }
+}
+
+fun <T : Any> assertClassVisibility(assertedClass: KClass<T>, visibility: KVisibility) {
+    assertEquals(assertedClass.visibility, visibility)
 }
 
 /**
@@ -46,7 +50,7 @@ fun assertRequestParams(client: Client, makeRequest: () -> Unit, assertParams: (
  * @param client the underlying mock client for the raw endpoint making the request.
  * @param makeRequest makes the request using the raw endpoint and returns the body text, or null on error
  */
-fun assertSuccessfulRequestReturnsResponseBody(client: Client, makeRequest: () -> String?) {
+fun assertSuccessfulRequestReturnsResponseBody(client: Client, makeRequest: (Int, String) -> String?) {
     val expectedBody = "{\"jsonStr\": true}"
     val body = mock(Response.Body::class.java).also {
         `when`(it.string()).thenReturn(expectedBody)
@@ -56,7 +60,7 @@ fun assertSuccessfulRequestReturnsResponseBody(client: Client, makeRequest: () -
     }
     `when`(client.fetch(any())).thenReturn(response)
 
-    assertEquals(expectedBody, makeRequest())
+    assertEquals(expectedBody, makeRequest(TEST_ARTICLES_COUNT, TEST_ARTICLES_LOCALE))
 }
 
 /**

@@ -21,6 +21,10 @@ permalink: /changelog/
 * **browser-icons**
   * Catch `IOException` that may be thrown when deleting icon caches.
 
+* **service-pocket**
+  * ⚠️ **This is a breaking change**: Rebuilt from the ground up to better support offering to clients Pocket recommended articles.
+  * See component's [README](https://github.com/mozilla-mobile/android-components/blob/master/components/service/pocket/README.md) to get more info.
+
 # 70.0.0
 
 * [Commits](https://github.com/mozilla-mobile/android-components/compare/v69.0.0...v70.0.0)
